@@ -60,6 +60,10 @@ class UserRequest extends FormRequest
                 $condLevel = 'bail|in:admin,member';
                 break;
             default:
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'wrong_task' => ['Wrong Task'],
+                ]);
+                throw $error;
                 break;
         }
         

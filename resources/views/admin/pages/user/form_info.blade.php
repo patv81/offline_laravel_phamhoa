@@ -10,7 +10,12 @@
 
     $inputHiddenID    = Form::hidden('id', @$item['id']);
     $inputHiddenAvatar = Form::hidden('avatar_current', @$item['avatar']);
-    $inputHiddenTask  = Form::hidden('task', 'edit-info');
+    Form::macro('hiddenTask', function($name)
+    {
+        return sprintf('<input name="task" type="hidden" value="%s">',$name);
+    });
+
+    $inputHiddenTaskChangeInfo  =Form::hiddenTask('edit-info');//'<input name="task" type="hidden" value="edit-info">';// Form::hidden('task', 'edit-info');
     $elements = [
         [
             'label'   => Form::label('username', 'UserName', $formLabelAttr),
@@ -30,7 +35,7 @@
             'avatar'   => (!empty(@$item['id'])) ? Template::showItemThumb($controllerName, @$item['avatar'], @$item['name']) : null ,
             'type'    => "avatar"
         ],[
-            'element' => $inputHiddenID . $inputHiddenAvatar . $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success']),
+            'element' => $inputHiddenID . $inputHiddenAvatar . $inputHiddenTaskChangeInfo . Form::submit('Save info', ['class'=>'btn btn-success']),
             'type'    => "btn-submit"
         ]
     ];
