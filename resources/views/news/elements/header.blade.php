@@ -12,8 +12,16 @@
         
         $xhtmlMenu = '<nav class="main_nav"><ul class="main_nav_list d-flex flex-row align-items-center justify-content-start">';
         $xhtmlMenuMobile = '<nav class="menu_nav"><ul class="menu_mm">';
-        $categoryIdCurrent = Route::input('category_id');
-
+        try {
+            if (is_null(Route::currentRouteName())){
+                $categoryIdCurrent=null;    
+            }else{
+                $categoryIdCurrent = Route::input('category_id');  
+            }            
+        } catch (\Exception $e) {
+            ddd('test header');
+        }
+        //$categoryIdCurrent=request()->input('category_id'); // not work
         foreach ($itemsCategory as $item) {
             
             $link       =  URL::linkCategory($item['id'], $item['name']); 
