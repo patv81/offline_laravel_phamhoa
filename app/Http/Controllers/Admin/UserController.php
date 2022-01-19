@@ -63,6 +63,17 @@ class UserController extends AdminController
             'status' => 'success'
         ]);
     }
+    public function pageChangePassword(Request $request)
+    {
+        $item = null;
+        if ($request->id !== null) {
+            $params["id"] = $request->id;
+            $item = $this->model->getItem($params, ['task' => 'get-item']);
+        }
 
+        return view($this->pathViewController .  'pagechangepassword', [
+            'item'        => $item
+        ]);
+    }
 
 }

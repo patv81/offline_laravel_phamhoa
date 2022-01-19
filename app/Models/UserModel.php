@@ -100,7 +100,9 @@ class UserModel extends AdminModel
 
             if($result) $result = $result->toArray();
         }
-
+        if($options['task'] == 'get-password') {
+            $result = self::select('id', 'username', 'email', 'status', 'fullname', 'level', 'avatar','password')->where('id', $params['id'])->first();
+        }
         return $result;
     }
 

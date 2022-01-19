@@ -1,3 +1,7 @@
+@php
+    //ddd(session()->get('userInfo'));
+    $linkChangePassword = route('myself/form',['id'=>session()->get('userInfo')['id']]);
+@endphp
 <div class="nav_menu">
     <nav>
         <div class="nav toggle">
@@ -11,7 +15,8 @@
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                </ul>
+                    <li><a href="{{ $linkChangePassword }}"><i class="fa fa-sign-out pull-right"></i> Đổi mật khẩu</a></li>
+                </ul>                
             </li>
         </ul>
     </nav>
