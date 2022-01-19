@@ -75,12 +75,15 @@ class SliderModel extends AdminModel
                 } else if(in_array($params['search']['field'], $this->fieldSearchAccepted)) { 
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%" );
                 } 
-            }
-
-            $result = $query->get()->toArray();
-           
+            }            
+        }
+        if ($options['task'] == "admin-cound-items-in-dashboard") {
+            
+            $query = $this
+                ->select(DB::raw(' COUNT(id) as count'));
 
         }
+        $result = $query->get()->toArray();
 
         return $result;
     }

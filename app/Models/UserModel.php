@@ -69,11 +69,15 @@ class UserModel extends AdminModel
                 } 
             }
 
-            $result = $query->get()->toArray();
-           
+        }
+        if ($options['task'] == "admin-cound-items-in-dashboard") {
+            
+            $query = $this
+                ->select(DB::raw(' COUNT(id) as count'));
 
         }
-
+        $result = $query->get()->toArray();
+        
         return $result;
     }
 
