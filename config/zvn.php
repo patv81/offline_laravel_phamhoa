@@ -66,6 +66,16 @@ return [
             'edit'      => ['class'=> 'btn-success' , 'title'=> 'Edit'      , 'icon' => 'fa-pencil' , 'route-name' => '/form'],
             'delete'    => ['class'=> 'btn-danger btn-delete'  , 'title'=> 'Delete'    , 'icon' => 'fa-trash'  , 'route-name' => '/delete'],
             'info'      => ['class'=> 'btn-info'    , 'title'=> 'View'      , 'icon' => 'fa-pencil' , 'route-name' => '/delete'],
+        ],
+        'type_open' => [
+            'new_window'           => ['name'=> 'new window'],
+            'new_tab'              => ['name'=> 'new tab'],
+            'current'              => ['name'=> 'current tab'],
+        ],
+        'type_menu'=>[
+            'link'                          => ['name'=> 'link'],
+            'category_product'              => ['name'=> 'category_product'],
+            'category_article'              => ['name'=> 'category_article'],
         ]
             
     ],
@@ -77,6 +87,7 @@ return [
             'article'   => ['all', 'name', 'content'],
             'rss'       => ['all', 'name', 'link'],
             'user'      => ['all', 'username', 'email', 'fullname'],
+            'menu'      => ['all', 'name', 'link'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -85,6 +96,7 @@ return [
             'article'   => ['edit', 'delete'],
             'rss'   => ['edit', 'delete'],
             'user'      => ['edit'],
+            'menu'   => ['edit', 'delete'],
         ]
     ]
     
