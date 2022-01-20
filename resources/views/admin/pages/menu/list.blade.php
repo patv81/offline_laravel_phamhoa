@@ -28,8 +28,9 @@
                             $link            =$val['link'];
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             $ordering        = $val['ordering'];
-                            $type_menu       = $val['type_menu'];
-                            $type_open       =$val['type_open'];
+                            $type_menu       = Template::showItemSelect2($controllerName, $id, $val['type_menu'], 'type_menu',config('zvn.template.type_menu'));
+                            $type_open       = Template::showItemSelect2($controllerName, $id, $val['type_open'], 'type_open',config('zvn.template.type_open'));
+
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
                         @endphp
 

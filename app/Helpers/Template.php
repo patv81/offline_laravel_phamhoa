@@ -156,4 +156,20 @@ class Template {
         $content = str_replace(['<p>', '</p>'], '', $content);
         return preg_replace('/\s+?(\S+)?$/', '', substr($content, 0, $length)) . $prefix;
     }
+    public static function showItemSelect2($controllerName, $id, $displayValue, $fieldName,$tmplDisplay)
+    {
+       $link          = route($controllerName . '/' . $fieldName, [$fieldName => 'value_new', 'id' => $id]);
+        
+    //    $tmplDisplay = Config::get('zvn.template.' . $fieldName);
+       $xhtml = sprintf('<select name="select_change_attr" data-url="%s" class="form-control">', $link  );
+
+        foreach ($tmplDisplay as $key => $value) {
+           $xhtmlSelected = '';
+           if ($key == $displayValue) $xhtmlSelected = 'selected="selected"';
+            $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value['name']);
+        }
+        $xhtml .= '</select>';
+
+        return $xhtml;
+    }
 }

@@ -97,6 +97,8 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
         Route::get('delete/{id}',                       [ 'as' => $controllerName . '/delete',      'uses' => $controller . 'delete'])->where('id', '[0-9]+');
         Route::get('change-status-{status}/{id}',       [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
+        Route::get('change-menu-type-{type_menu}/{id}',      [ 'as' => $controllerName . '/type_menu',        'uses' => $controller . 'menu'])->where('id', '[0-9]+');
+        Route::get('change-open-type-{type_open}/{id}',      [ 'as' => $controllerName . '/type_open',        'uses' => $controller . 'typeopen'])->where('id', '[0-9]+');
     });
     // ============================== MYSELF ==============================
     $prefix         = 'myself';

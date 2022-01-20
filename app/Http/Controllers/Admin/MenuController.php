@@ -35,5 +35,27 @@ class MenuController extends AdminController
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
     }
-
+    public function menu(MenuAjaxRequest $request)
+    {
+        $this->validate($request, [ 'type_menu' => 'required|in:link,category_article,category_category' ]);
+        $menu = $this->model->find($request->id);
+        
+        $menu->type_menu = $request->type_menu;
+        $test = $menu->save();
+        return response()->json([
+            'status' => 'success',
+            'test'=>$request->type_menu,
+        ]);
+    }
+    public function typeopen(MenuAjaxRequest $request)
+    {
+        $this->validate($request, [ 'type_open' => 'required|in:current,new_tab,new_window' ]);
+        $menu = $this->model->find($request->id);
+        $menu->type_open = $request->type_open;
+        $menu->save();
+        return response()->json([
+            'status' => 'success',
+            'test'=>$request->id
+        ]);
+    }
 }
