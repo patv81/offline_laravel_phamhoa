@@ -2,6 +2,7 @@
 use App\Models\CategoryModel as CategoryModel;
 use App\Models\MenuModel as MenuModel;
 use App\Helpers\URL;
+use App\Helpers\CheckActive;
 
 $categoryModel = new CategoryModel();
 $menuModel = new MenuModel();
@@ -11,6 +12,7 @@ $itemsCategory = $categoryModel->listItems(null, ['task' => 'news-list-items']);
 
 $xhtmlMenu = '';
 $xhtmlMenuMobile = '';
+$currentRouteName = Route::currentRouteName();
 
 $typeOpens=[
     'new_tab'=>'target="_blank"',
@@ -28,16 +30,17 @@ if (count($itemsMenu) > 0) {
     foreach ($itemsMenu as $menu) {
         $itemTypeOpen = $typeOpens[$menu['type_open']]??'';
         if ($menu['type_menu'] == 'link') {
-            $classActive ='';
-            $xhtmlMenu .= sprintf('<li %s><a %s href="%s">%s</a></li>', $classActive,$itemTypeOpen, $menu['link'],  $menu['name']);
+            $classActive =CheckActive::typeLink($menu['link'],$currentRouteName );
+            $xhtmlMenu .= sprintf('<li class="%s"><a %s href="%s">%s</a></li>', $classActive,$itemTypeOpen, $menu['link'],  $menu['name']);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $menu['link'],  $menu['name']);
         } elseif ($menu['type_menu'] == 'category_article') {
             if (count($itemsCategory) > 0) {        
-                $xhtmlMenu .= sprintf('<li class="nav-item dropdown">
+                $classActive =CheckActive::typeArticle(url()->current());
+                $xhtmlMenu .= sprintf('<li class="nav-item dropdown %s">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     %s
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">',$menu['name']);
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">',$classActive,$menu['name']);
                 try {
                     if (is_null(Route::currentRouteName())) {
                         $categoryIdCurrent = null;
