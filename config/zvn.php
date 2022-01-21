@@ -9,6 +9,9 @@ return [
         'long_time'    => 'H:m:s d/m/Y',
         'short_time'   => 'd/m/Y',
     ],
+    'path'=>[
+        'galery'      => 'storage/files/shares',
+    ],
     'template'         => [
         'form_input' => [
             'class' => 'form-control col-md-6 col-xs-12'

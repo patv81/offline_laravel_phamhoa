@@ -73,6 +73,14 @@ Route::group(['prefix' => $prefixNews, 'namespace' => 'News'], function () {
         Route::get('/get-gold',                             [ 'as' => "$controllerName/get-gold",                  'uses' => $controller . 'getGold' ]);
         Route::get('/get-coin',                             [ 'as' => "$controllerName/get-coin",                  'uses' => $controller . 'getCoin' ]);
     });
+    // ====================== GALERY ========================
+    $prefix         = '';
+    $controllerName = 'galery';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/thu-vien-hinh-anh',                             [ 'as' => "$controllerName/index",                  'uses' => $controller . 'index' ]);
+    });
+    
 });
 
 // bai-viet/suc-khoe-3.php
