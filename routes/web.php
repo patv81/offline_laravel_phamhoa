@@ -157,7 +157,7 @@ Route::group(['prefix' => $prefixNews, 'namespace' => 'News'], function () {
     
     Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
         $controller = ucfirst($controllerName)  . 'Controller@';
-        Route::get('/login',        ['as' => $controllerName.'/login',      'uses' => $controller . 'login'])->middleware('check.login');
+        Route::get('/userlogin',        ['as' => $controllerName.'/login',      'uses' => $controller . 'login'])->middleware('check.login');
         Route::post('/postLogin',   ['as' => $controllerName.'/postLogin',  'uses' => $controller . 'postLogin']);
 
         // ====================== LOGOUT ========================
