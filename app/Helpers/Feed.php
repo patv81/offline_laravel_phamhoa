@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Helpers;
-
-
+use App\Models\NewsRssModel;
+use DB;
 class Feed
 {
     public static function read($itemsRss)
@@ -22,6 +22,27 @@ class Feed
             }
         }
         return $result;
+    }
+    public static function readToSave($itemsRss)
+    {
+        self::deleteAll();
+        $result = self::read($itemsRss);
+        $data=[];
+        try {
+            $data = collect($result)->map(function($item){
+                $item['pub_date'] = date("Y-m-d H-i-s",strtotime($item['pubDate']));
+                unset($item['pubDate']);
+                return $item;
+            })->toArray();
+            DB::table('news_rss')->insert($data);
+        } catch (\Throwable $th) {
+            return [];
+        }
+
+        return $result;
+    }
+    public static function deleteAll(){
+        DB::table('news_rss')->truncate();
     }
 
     public static function checkSourceLink($source, $link)
