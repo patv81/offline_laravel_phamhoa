@@ -30,7 +30,7 @@ if (count($itemsMenu) > 0) {
     foreach ($itemsMenu as $menu) {
         $itemTypeOpen = $typeOpens[$menu['type_open']]??'';
         if ($menu['type_menu'] == 'link') {
-            $classActive =CheckActive::typeLink($menu['link'],$currentRouteName );
+            $classActive =CheckActive::typeLink($menu['link']??'/',$currentRouteName );
             $xhtmlMenu .= sprintf('<li class="%s"><a %s href="%s">%s</a></li>', $classActive,$itemTypeOpen, $menu['link'],  $menu['name']);
             $xhtmlMenuMobile .= sprintf('<li class="menu_mm"><a href="%s">%s</a></li>', $menu['link'],  $menu['name']);
         } elseif ($menu['type_menu'] == 'category_article') {
@@ -103,6 +103,10 @@ if (count($itemsMenu) > 0) {
                                 </div>
 
                             </a>
+                        </div>
+                        <div class="ml-5">
+                            <button type="button" class="btn">Basic</button>
+                            <button type="button" class="btn btn-primary">Primary</button>
                         </div>
                     </div>
                 </div>
