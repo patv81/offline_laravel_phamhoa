@@ -6,7 +6,7 @@ class Form {
     public static function show ($elements) { 
         $xhtml = null;
         foreach ($elements as $element) {
-            $xhtml .= self::formGroup($element);
+            $xhtml .= self::formGroup($element,$element['params']??null);
         }
         return $xhtml;
     }
@@ -66,6 +66,18 @@ class Form {
                             %s
                         </div>
                     </div>', $element['element']
+                );
+                break;
+            case 'logo':
+                $xhtml .= sprintf(
+                    '<div class="form-group">
+                        %s
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            %s
+                            <p style="margin-top: 50px;">%s</p>
+                        </div>
+                    </div>', $element['label'], $element['element'], $element['logo']
+                    // </div>', $element['label'], $element['element'], $element[$params['input']]
                 );
                 break;
         }

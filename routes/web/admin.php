@@ -121,4 +121,12 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
             \UniSharp\LaravelFilemanager\Lfm::routes();
         });
     });
+    // ============================== GENERAL ==============================
+    $prefix         = 'general';
+    $controllerName = 'general';
+    Route::group(['prefix' =>  $prefix], function () use($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                                 [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
+        Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+    });
 });
