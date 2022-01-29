@@ -31,14 +31,14 @@ class GeneralModel extends AdminModel
         $result = null;
         
         if($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'status', 'link', 'ordering', 'source')->where('id', $params['id'])->first();
+            $result = self::select('id','key_value','value','status','created_by','created','modified_by','modified')->where('id', $params['id'])->first();
         }
 
         return $result;
     }
 
     public function saveItem($params = null, $options = null) { 
-        if($options['task'] == 'edit-main-general') {  
+        if($options['task'] == 'setting-main') {  
             $main = self::firstOrCreate(
                 [
                     'key_value'=>'setting-main'
@@ -66,25 +66,22 @@ class GeneralModel extends AdminModel
             $main->value= json_encode($this->prepareParams($params));
             $main->save();
         }
-        if($options['task'] == 'add-item') {
-            $params['created_by'] = "hailan";
-            $params['created']    = date('Y-m-d');
-            self::insert($this->prepareParams($params));        
-        }
-
-        if($options['task'] == 'edit-item') {
-            $params['modified_by']   = "hailan";
-            $params['modified']      = date('Y-m-d');
-            self::where('id', $params['id'])->update($this->prepareParams($params));
-        }
-    }
-
-    public function deleteItem($params = null, $options = null) 
-    { 
-        if($options['task'] == 'delete-item') {
-            self::where('id', $params['id'])->delete();
+        if($options['task'] == 'setting-email') {  
+            $main = self::firstOrCreate(
+                [
+                    'key_value'=>'setting-email'
+                ],
+                [
+                    'key_value'=>'setting-email',
+                    'created'=> date('Y-m-d'),
+                    'value'=>[],
+                ]
+            );
+            $main->modified= date('Y-m-d');
+            $main->modified_by=session()->get('userInfo')['username'];
+            $main->value= json_encode($this->prepareParams($params));
+            $main->save();
         }
     }
-
 }
 

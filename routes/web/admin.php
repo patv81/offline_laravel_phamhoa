@@ -128,5 +128,6 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/',                                 [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
         Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
+        Route::get('testmail',                             [ 'as' => $controllerName . '/testmail',        'uses' => $controller . 'testmail']);
     });
 });

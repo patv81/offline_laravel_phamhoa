@@ -15,7 +15,7 @@ use App\Helpers\Template as Template;
                                     data-toggle="tab" aria-expanded="true">Main</a>
                             </li>
                             <li role="presentation" class=""><a href="#tab_content2" role="tab"
-                                    id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
+                                    id="profile-tab" data-toggle="tab" aria-expanded="false">Email</a>
                             </li>
                             <li role="presentation" class=""><a href="#tab_content3" role="tab"
                                     id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
@@ -27,10 +27,7 @@ use App\Helpers\Template as Template;
                                 @include('admin.pages.general.form-main')
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-                                    Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson
-                                    artisan four loko farm-to-table craft beer twee. Qui photo
-                                    booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+                                @include('admin.pages.general.form-email')
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
                                 <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
