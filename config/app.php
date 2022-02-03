@@ -178,6 +178,7 @@ return [
         * my custom
         */
         Collective\Html\HtmlServiceProvider::class,
+        App\Providers\MailServiceProvider::class,
     ],
 
     /*
