@@ -63,6 +63,9 @@ return [
             'description'   => ['name'=> 'Search by Description'],
             'link'          => ['name'=> 'Search by Link'],
             'content'       => ['name'=> 'Search by Content'],
+            'message'       => ['name'=> 'Search by Message'],
+            'fullname'      => ['name'=> 'Search by Name'],
+            'phone'         => ['name'=> 'Search by Phone']
             
         ],
         'button' => [
@@ -91,6 +94,7 @@ return [
             'rss'       => ['all', 'name', 'link'],
             'user'      => ['all', 'username', 'email', 'fullname'],
             'menu'      => ['all', 'name', 'link'],
+            'contact'   => ['all','message','fullname','phone','email'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -100,6 +104,7 @@ return [
             'rss'   => ['edit', 'delete'],
             'user'      => ['edit'],
             'menu'   => ['edit', 'delete'],
+            'contact' => ['delete'],
         ]
     ]
     

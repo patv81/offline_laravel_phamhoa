@@ -23,6 +23,7 @@
             <li><a href="{{ route('rss') }}"><i class="fa fa-newspaper-o"></i> Rss</a></li>
             <li><a href="{{ route('galery') }}"><i class="fa fa-building-o"></i> Galery</a></li>
             <li><a href="{{ route('menu') }}"><i class="fa fa-sliders"></i> Menu</a></li>
+            <li><a href="{{ route('contact') }}"><i class="fa fa-building-o"></i> Contact</a></li>
             <li><a href="{{ route('general') }}"><i class="fa fa-laptop"></i> Genral</a></li>
         </ul>
     </div>

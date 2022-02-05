@@ -80,6 +80,14 @@ Route::group(['prefix' => $prefixNews, 'namespace' => 'News'], function () {
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/thu-vien-hinh-anh',                             [ 'as' => "$controllerName/index",                  'uses' => $controller . 'index' ]);
     });
+    // ====================== CONTACT ========================
+    $prefix         = 'lien-he';
+    $controllerName = 'contact';
+    Route::group(['prefix' =>  $prefix], function () use ($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('',                             [ 'as' => "$controllerName/index",                  'uses' => $controller . 'index' ]);
+        Route::post('/save',                       [ 'as' => "$controllerName/save",                  'uses' => $controller . 'save' ]);
+    });
     
 });
 

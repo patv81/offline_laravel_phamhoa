@@ -130,4 +130,12 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::post('save',                             [ 'as' => $controllerName . '/save',        'uses' => $controller . 'save']);
         Route::get('testmail',                             [ 'as' => $controllerName . '/testmail',        'uses' => $controller . 'testmail']);
     });
+    // ============================== GENERAL ==============================
+    $prefix         = 'contact';
+    $controllerName = 'contact';
+    Route::group(['prefix' =>  $prefix], function () use($controllerName) {
+        $controller = ucfirst($controllerName)  . 'Controller@';
+        Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
+        Route::get('change-status-{status}/{id}',   [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
+    });
 });
