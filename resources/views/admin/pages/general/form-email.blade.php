@@ -17,13 +17,10 @@
             'element' => Form::text('password', @$item['password'], $formInputAttr )
         ],
         [
-            'label'   => Form::label('fromadress', 'Gửi từ địa chỉ email', $formLabelAttr),
-            'element' => Form::text('fromadress', @$item['fromadress'], $formInputAttr )
+            'label'   => Form::label('bcc', 'BCC', $formLabelAttr),
+            'element' => Form::textarea('bcc', @$item['bcc'], $formInputAttr )
         ],
-        [
-            'label'   => Form::label('name', 'Tên hiển thị', $formLabelAttr),
-            'element' => Form::text('name', @$item['name'], $formInputAttr )
-        ],
+
         [
             'element' => $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success']),
             'type'    => "btn-submit"

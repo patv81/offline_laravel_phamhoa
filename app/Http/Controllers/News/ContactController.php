@@ -7,7 +7,9 @@ use Illuminate\Http\Request;;
 
 use App\Models\ContactModel as MainModel;
 use App\Helpers\Feed;
-
+use App\Models\GeneralModel;
+use App\Mail\ContactMe;
+use Mail;
 class ContactController extends Controller
 {
     private $pathViewController = 'news.pages.contact.';  // slider
@@ -19,6 +21,9 @@ class ContactController extends Controller
     {
         view()->share('controllerName', $this->controllerName);
         $this->model = new MainModel();
+        $items              = (new GeneralModel)->listItems($this->params, ['task'  => 'admin-list-items']);
+        $this->settingMain = collect($items)->filter(fn($x)=>$x['key_value']==='setting-main')->first();
+        $this->settingEmail = collect($items)->filter(fn($x)=>$x['key_value']==='setting-email')->first();
     }
 
     public function index(Request $request)
@@ -39,6 +44,8 @@ class ContactController extends Controller
 
             $params['ip'] = $request->ip();
             $this->model->saveItem($params, ['task' => $task]);
+            $admin = json_decode($this->settingEmail['value'],true)['bcc'];
+            Mail::to($data['email'])->bcc($admin)->send(new ContactMe($params));
             return redirect()->route($this->controllerName.'/index')->with("news_notify", $notify);
         }
     }
