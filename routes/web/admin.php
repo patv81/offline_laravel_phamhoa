@@ -115,11 +115,6 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
     Route::group(['prefix' =>  $prefix], function () use($controllerName) {
         $controller = ucfirst($controllerName)  . 'Controller@';
         Route::get('/',                                 [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
-        Route::group(['prefix' => 'laravel-filemanager','middleware' => ['web']], function () {
-            // Route::group(['prefix' => 'laravel-filemanager','middleware' => ['web', 'auth']], function () {
-            // tai sao middleWare web dung de lam nhung viec gi ?
-            \UniSharp\LaravelFilemanager\Lfm::routes();
-        });
     });
     // ============================== GENERAL ==============================
     $prefix         = 'general';

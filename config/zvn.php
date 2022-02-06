@@ -10,7 +10,8 @@ return [
         'short_time'   => 'd/m/Y',
     ],
     'path'=>[
-        'galery'      => 'storage/files/shares',
+        // 'galery'      => 'storage/files/shares',
+        'galery'      => 'images/galery',
     ],
     'template'         => [
         'form_input' => [
