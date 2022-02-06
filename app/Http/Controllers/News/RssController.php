@@ -8,7 +8,7 @@ use Illuminate\Http\Request;;
 use App\Models\RssModel;
 use App\Models\NewsRssModel;
 use App\Helpers\Feed;
-
+use Cache;
 class RssController extends Controller
 {
     private $pathViewController = 'news.pages.rss.';  // slider
@@ -25,11 +25,11 @@ class RssController extends Controller
     {
         view()->share('title', 'Tin tức tổng hợp');
         $rssModel   = new RssModel();
-
+        // Cache::forget('access.saved.newsrss');
         $data = cache()->remember("access.saved.newsrss",now()->addMinutes(60),function() use ($rssModel){
             $itemsRss   = $rssModel->listItems(null, ['task'   => 'news-list-items']);
             Feed::readToSave($itemsRss);
-            return NewsRssModel::all();
+            return NewsRssModel::orderByDesc('pub_date')->get();
         });
         return view($this->pathViewController .  'index', [
             'items'   => $data

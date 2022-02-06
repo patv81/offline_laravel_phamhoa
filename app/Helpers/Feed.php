@@ -25,11 +25,16 @@ class Feed
     }
     public static function readToSave($itemsRss)
     {
-        self::deleteAll();
-        $result = self::read($itemsRss);
+        // self::deleteAll();
+        $oldData= NewsRssModel::all();
+        
+
+        $newData = collect(self::read($itemsRss));
+        $newDataWillBesaved = self::diff($newData,$oldData);
+        
         $data=[];
         try {
-            $data = collect($result)->map(function($item){
+            $data = collect($newDataWillbesaved)->map(function($item){
                 $item['pub_date'] = date("Y-m-d H-i-s",strtotime($item['pubDate']));
                 unset($item['pubDate']);
                 return $item;
@@ -39,7 +44,19 @@ class Feed
             return [];
         }
 
-        return $result;
+        return $data;
+    }
+    public static function diff($keep, $compare){
+        $convertedKeep=$keep->map(function ($item){
+            return $item['link'];
+        });
+        $convertedKeep= $convertedKeep->combine($keep);
+
+        $convertedCompare=$compare->map(function ($item){
+            return $item['link'];
+        });
+        $convertedCompare= $convertedCompare->combine($compare);
+        return $convertedKeep->diffKeys($convertedCompare)->values();
     }
     public static function deleteAll(){
         DB::table('news_rss')->truncate();

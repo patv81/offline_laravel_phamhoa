@@ -6,7 +6,7 @@
                     $name = $item['title'];
                     $thumb = $item['thumb'];
                     $link = $item['link'];
-                    $pubDate = $item['pubDate'];
+                    $pubDate = $item['pub_date'];
                     $description = $item['description'];
 
                 @endphp
