@@ -1,3 +1,7 @@
+
+@php
+ob_start();	
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,3 +18,10 @@
 @include('news.elements.script')
 </body>
 </html>
+@php
+	$content = ob_get_clean();
+	echo \App\Libs\TinyMinify\TinyMinify::html($content, $options = [
+    'collapse_whitespace' => false,
+    'disable_comments' => false,
+]);
+@endphp
