@@ -133,4 +133,12 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('/',                             [ 'as' => $controllerName,                  'uses' => $controller . 'index' ]);
         Route::get('change-status-{status}/{id}',   [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status'])->where('id', '[0-9]+');
     });
+    // ============================== GENERAL ==============================
+    $prefix         = 'logs';
+    Route::group(['prefix' =>  $prefix], function () {
+        Route::get('/', function(){
+            return view('admin.pages.logs.index');
+        })->name('logs');
+    });
+    
 });

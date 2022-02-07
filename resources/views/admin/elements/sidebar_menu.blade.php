@@ -25,6 +25,7 @@
             <li><a href="{{ route('menu') }}"><i class="fa fa-sliders"></i> Menu</a></li>
             <li><a href="{{ route('contact') }}"><i class="fa fa-building-o"></i> Contact</a></li>
             <li><a href="{{ route('general') }}"><i class="fa fa-laptop"></i> Genral</a></li>
+            <li><a href="{{ route('logs') }}"><i class="fa fa-laptop"></i> Logs</a></li>
         </ul>
     </div>
 </div>
