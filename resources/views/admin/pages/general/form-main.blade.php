@@ -12,8 +12,8 @@
     $elements = [
         [
             'label'   => Form::label('logo', 'Logo', $formLabelAttr),
-            'element' => Form::file('logo', $formInputAttr ),
-            'logo'   => Template::showItemThumb($controllerName, @$item['logo'], @$item['name']) ,
+            'element' => Form::text('logo', @$item['logo'], $formInputAttr),
+            'image'   => @$item['logo'],
             'type'    => "logo"
         ],
         [
@@ -34,7 +34,7 @@
         ],
         [
             'label'   => Form::label('desctiption', 'Giới thiệu', $formLabelAttr),
-            'element' => Form::textArea('desctiption', @$item['desctiption'],  $formCkeditor )
+            'element' => Form::textArea('desctiption', @$item['desctiption'],  array_merge($formCkeditor,['id'=>'my-editor']) )
         ],
         [
             'element' => $inputHiddenTask . Form::submit('Save', ['class'=>'btn btn-success']),

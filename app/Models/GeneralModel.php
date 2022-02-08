@@ -49,20 +49,6 @@ class GeneralModel extends AdminModel
                     'value'=>[],
                 ]
             );
-            $previousValue = json_decode($main->value, true);
-            $isFirstTime = empty($previousValue['logo']);
-            if(!empty($params['logo']) && !$isFirstTime){
-                $this->deleteThumb($params['logo_current']);
-                $params['logo'] = $this->uploadThumb($params['thumb']); //add-new
-            }else {
-                if(!empty($params['logo'])){
-                    $params['logo']      = $this->uploadThumb($params['logo']); //edit logo
-                }else{
-                    $params['logo']= $previousValue['logo']; //don't edit logo
-                }
-                $main->modified= date('Y-m-d');
-                $main->modified_by=session()->get('userInfo')['username'];
-            }
             $main->value= json_encode($this->prepareParams($params));
             $main->save();
         }
