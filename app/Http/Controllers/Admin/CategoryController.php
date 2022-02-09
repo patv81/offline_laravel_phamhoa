@@ -19,6 +19,21 @@ class CategoryController extends AdminController
         view()->share('controllerName', $this->controllerName);
     }
 
+    public function form(Request $request)
+    {
+        
+        $item = null;
+        if ($request->id !== null) {
+            $params["id"] = $request->id;
+            $item = $this->model->getItem($params, ['task' => 'get-item']);
+        }
+        $nodes= $this->model->listItems($this->params,['task'=>'admin-list-items-in-select-box']);
+        // dd($nodes);
+        return view($this->pathViewController .  'form', [
+            'item'        => $item,
+            'nodes'=>$nodes,
+        ]);
+    }
     public function save(MainRequest $request)
     {
         if ($request->method() == 'POST') {

@@ -6,17 +6,21 @@ use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Kalnoy\Nestedset\NodeTrait;
 
 class CategoryModel extends AdminModel
 {
-    public function __construct()
-    {
-        $this->table               = 'category';
-        $this->folderUpload        = 'category';
-        $this->fieldSearchAccepted = ['id', 'name'];
-        $this->crudNotAccepted     = ['_token'];
-    }
 
+    // public function __construct()
+    // {
+    //     $this->table               = 'category';
+    //     $this->folderUpload        = 'category';
+    //     $this->fieldSearchAccepted = ['id', 'name'];
+    //     $this->crudNotAccepted     = ['_token'];
+    // }
+    use NodeTrait;
+    protected $table = 'category';
+    protected $guarded =[]; 
     public function listItems($params = null, $options = null)
     {
 
@@ -25,24 +29,23 @@ class CategoryModel extends AdminModel
         if ($options['task'] == "admin-list-items") {
             $query = $this->select('id', 'name', 'status', 'is_home', 'display', 'created', 'created_by', 'modified', 'modified_by');
 
-            if ($params['filter']['status'] !== "all") {
-                $query->where('status', '=', $params['filter']['status']);
-            }
+                    if ($params['filter']['status'] !== "all") {
+                        $query->where('status', '=', $params['filter']['status']);
+                    }
 
-            if ($params['search']['value'] !== "") {
-                if ($params['search']['field'] == "all") {
-                    $query->where(function ($query) use ($params) {
-                        foreach ($this->fieldSearchAccepted as $column) {
-                            $query->orWhere($column, 'LIKE',  "%{$params['search']['value']}%");
+                    if ($params['search']['value'] !== "") {
+                        if ($params['search']['field'] == "all") {
+                            $query->where(function ($query) use ($params) {
+                                foreach ($this->fieldSearchAccepted as $column) {
+                                    $query->orWhere($column, 'LIKE',  "%{$params['search']['value']}%");
+                                }
+                            });
+                        } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
+                            $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                         }
-                    });
-                } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
-                    $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
-                }
-            }
+                    }
 
-            $result =  $query->orderBy('id', 'desc')
-                ->paginate($params['pagination']['totalItemsPerPage']);
+            $result =  $query->get();
         }
 
         if ($options['task'] == 'news-list-items') {
@@ -67,6 +70,14 @@ class CategoryModel extends AdminModel
                 ->where('status', '=', 'active');
 
             $result = $query->pluck('name', 'id')->toArray();
+        }
+        if ($options['task'] == 'admin-list-items-in-select-box') {
+            $query = self::select('id', 'name')->where('_lft','<>',NULL)->withDepth()->defaultOrder();
+            $nodes  = $query->get()->toFlatTree();
+            foreach($nodes as $value){
+                $result[$value['id']] = str_repeat('|----',$value['depth']).$value['name'];
+            }
+            // dd($result);
         }
         return $result;
     }
@@ -112,7 +123,7 @@ class CategoryModel extends AdminModel
         $result = null;
 
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'status')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'parent_id','status')->where('id', $params['id'])->first();
         }
 
         if ($options['task'] == 'news-get-item') {
@@ -120,6 +131,7 @@ class CategoryModel extends AdminModel
 
             if ($result) $result = $result->toArray();
         }
+        
 
         return $result;
     }
@@ -144,7 +156,9 @@ class CategoryModel extends AdminModel
         if ($options['task'] == 'add-item') {
             $params['created_by'] = "hailan";
             $params['created']    = date('Y-m-d');
-            self::insert($this->prepareParams($params));
+            $parent = self::find($params['parent_id']);
+            // dd($parent);
+            self::create($this->prepareParams($params),$parent);
         }
 
         if ($options['task'] == 'edit-item') {

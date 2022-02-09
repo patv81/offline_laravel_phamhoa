@@ -20,6 +20,10 @@
             'element' => Form::select('status', $statusValue, @$item['status'], $formInputAttr)
         ],
         [
+            'label'   => Form::label('parent_id', 'Parent', $formLabelAttr),
+            'element' => Form::select('parent_id', $nodes, @$item['parent_id'], $formInputAttr)
+        ],
+        [
             'element' => $inputHiddenID . Form::submit('Save', ['class'=>'btn btn-success']),
             'type'    => "btn-submit"
         ]
