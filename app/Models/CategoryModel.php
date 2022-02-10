@@ -181,7 +181,9 @@ class CategoryModel extends AdminModel
     public function deleteItem($params = null, $options = null)
     {
         if ($options['task'] == 'delete-item') {
-            self::where('id', $params['id'])->delete();
+            $node = self::find($params['id']);
+            $node->delete();
+            // self::where('id', $params['id'])->delete();
         }
     }
 }
