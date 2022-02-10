@@ -73,6 +73,10 @@ class CategoryModel extends AdminModel
         }
         if ($options['task'] == 'admin-list-items-in-select-box') {
             $query = self::select('id', 'name')->where('_lft','<>',NULL)->withDepth()->defaultOrder();
+            if(isset($params['id'])){
+                $node = self::find($params['id']);
+                $query = self::select('id', 'name')->where('_lft','<',$node->_lft)->orWhere('_rgt','>',$node->_rgt)->withDepth()->defaultOrder();
+            }
             $nodes  = $query->get()->toFlatTree();
             foreach($nodes as $value){
                 $result[$value['id']] = str_repeat('|----',$value['depth']).$value['name'];
@@ -164,7 +168,13 @@ class CategoryModel extends AdminModel
         if ($options['task'] == 'edit-item') {
             $params['modified_by']   = "hailan";
             $params['modified']      = date('Y-m-d');
-            self::where('id', $params['id'])->update($this->prepareParams($params));
+            $node = self::find($params['id']);
+            $node->update($this->prepareParams($params));
+            if ($node['paranet_id']!=$params['parent_id']){
+                $parent = self::find($params['parent_id']);
+                $node->appendToNode($parent)->save();
+            }
+            // self::where('id', $params['id'])->update($this->prepareParams($params));
         }
     }
 
