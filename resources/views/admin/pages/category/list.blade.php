@@ -1,3 +1,4 @@
+
 @php
     use App\Helpers\Template as Template;
     use App\Helpers\Hightlight as Hightlight;
@@ -9,6 +10,7 @@
                 <tr class="headings">
                     <th class="column-title">#</th>
                     <th class="column-title">Name</th>
+                    <th class="column-title">Thứ tự</th>
                     <th class="column-title">Trạng thái</th>
                     <th class="column-title">Hiện thị Home</th>
                     <th class="column-title">Kiểu hiện thị</th>
@@ -24,7 +26,9 @@
                             $index           = $key + 1;
                             $class           = ($index % 2 == 0) ? "even" : "odd";
                             $id              = $val['id'];
-                            $name            = Hightlight::show($val['name'], $params['search'], 'name');
+                            //$name            = Hightlight::show($val['name'], $params['search'], 'name');
+                            $name            = Template::showNestedName($val['name'],$val['depth']);
+                            $order           = Template::showNestedOrder($val['id']);
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']);
                             $isHome          = Template::showItemIsHome($controllerName, $id, $val['is_home']);
                             $display         = Template::showItemSelect($controllerName, $id, $val['display'], 'display');
@@ -36,6 +40,7 @@
                         <tr class="{{ $class }} pointer">
                             <td >{{ $index }}</td>
                             <td width="25%">{!! $name !!}</td>
+                            <td >{!! $order !!}</td>
                             <td>{!! $status !!}</td>
                             <td>{!! $isHome  !!}</td>
                             <td>{!! $display !!}</td>

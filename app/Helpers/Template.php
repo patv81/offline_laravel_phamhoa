@@ -1,7 +1,7 @@
 <?php 
 namespace App\Helpers;
 use Config;
-
+use App\Models\CategoryModel;
 class Template {
     public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch) { // $currentFilterStatus active inactive all
         $xhtml = null;
@@ -171,5 +171,34 @@ class Template {
         $xhtml .= '</select>';
 
         return $xhtml;
+    }
+    public static function showNestedName($name,$level){
+        $xhtml = sprintf(
+            '<span class="badge">%s</span><strong>%s</strong>',
+                $level-1, 
+                str_repeat('|----',$level-1).$name);
+        return $xhtml ;
+    }
+    public static function showNestedOrder($id){
+        
+        $upBtn =  sprintf(
+        '<a href="%s" type="button" class="btn btn-primary">
+            <i class="fa fa-long-arrow-up"></i>
+        </a>'
+        ,route( 'category/move' , [ 'id' => $id , 'type' => 'up'] ) );
+        $downBtn = sprintf(
+        '<a href="%s" type="button" class="btn btn-primary">
+            <i class="fa fa-long-arrow-down"></i>
+        </a>'
+        ,route( 'category/move' , [ 'id' => $id , 'type' => 'down'] ) );
+        $node = CategoryModel::find($id);
+        if (empty($node->getPrevSibling())){
+            $upBtn='';
+        }
+        if(empty($node->getNextSibling())){
+            $downBtn='';
+        }
+        return $upBtn.$downBtn;
+
     }
 }
