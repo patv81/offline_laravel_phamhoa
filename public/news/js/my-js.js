@@ -23,5 +23,10 @@ $(document).ready(function () {
         $("input[name=fullname]").val(arr['fullname']);
         $("input[name=email]").val(arr['email']);
         $("input[name=phone]").val(arr['phone']);
-    }
+    };
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
 });

@@ -3,12 +3,16 @@ use App\Models\CategoryModel as CategoryModel;
 use App\Models\MenuModel as MenuModel;
 use App\Helpers\URL;
 use App\Helpers\CheckActive;
-
+use App\Helpers\Template;
 $categoryModel = new CategoryModel();
 $menuModel = new MenuModel();
 $itemsMenu = $menuModel->listItems(null, ['task' => 'news-list-items']);
 
 $itemsCategory = $categoryModel->listItems(null, ['task' => 'news-list-items']);
+$itemsCategory1 = $categoryModel->listItems(null, ['task' => 'news-list-items1']);
+
+
+
 
 $xhtmlMenu = '';
 $xhtmlMenuMobile = '';
@@ -58,6 +62,7 @@ if (count($itemsMenu) > 0) {
                     $xhtmlMenuMobile .=sprintf('<a %s class="menu_mm dropdown-item %s" href="%s">%s</a>',$itemTypeOpen,$classActive, $link, $item['name']);
                 }
                 $xhtmlMenu .= sprintf('<a  class="dropdown-item" href="%s">Tin tức tổng hợp</a>', route('rss/index'));
+
                 $xhtmlMenuMobile .= sprintf('<a class="menu_mm dropdown-item" href="%s">Tin tức tổng hợp</a>', route('rss/index'));
                 $xhtmlMenu .= '</div></li>';
                 
@@ -76,8 +81,8 @@ if (count($itemsMenu) > 0) {
     } else {
         $xhtmlMenuUser = sprintf('<li><a href="%s">%s</a></li>', route('auth/login'), 'Login');
     }
-
-    $xhtmlMenu .= $xhtmlMenuUser . '</ul></nav>';
+    $test= Template::showNestedCategory('Test',$itemsCategory1);
+    $xhtmlMenu .= $xhtmlMenuUser .$test. '</ul></nav>';
     $xhtmlMenuMobile .= $xhtmlMenuUser . '</ul></nav>';
 }
 

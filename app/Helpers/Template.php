@@ -201,4 +201,43 @@ class Template {
         return $upBtn.$downBtn;
 
     }
+    
+    public static function showNestedCategory($name,$arr){
+        // $test= '<li class="nav-item dropdown  dropdown-submenu">
+        //     <a class="test nav-link dropdown-toggle" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+        //     <ul class="dropdown-menu">
+        //         <li class="dropdown-item" ><a tabindex="-1" href="#">2nd level dropdown</a></li>
+        //         <li class="dropdown-item" ><a tabindex="-1" href="#">2nd level dropdown</a></li>
+        //         <li class="dropdown-item dropright dropdown-submenu">
+        //             <a class="test nav-link dropdown-toggle" href="#">Another dropdown <span class="caret"></span></a>
+        //             <ul class="dropdown-menu">
+        //                 <li><a href="#">3rd level dropdown</a></li>
+        //                 <li><a href="#">3rd level dropdown</a></li>
+        //             </ul>
+        //         </li>
+        //     </ul>
+        // </li>';
+        $re = sprintf('<li class="nav-item dropdown  dropdown-submenu">
+            <a class="test nav-link dropdown-toggle" tabindex="-1" href="#">%s <span class="caret"></span></a>
+            <ul class="dropdown-menu">',$name);
+        $traverse = function ($categories) use (&$traverse,&$re) {
+            foreach ($categories as $category) {
+                if(!empty($category['children'])){ 
+                    $re.=sprintf('<li class="dropdown-item dropright dropdown-submenu">
+                        <a class="test nav-link dropdown-toggle" href="#">%s<span class="caret"></span></a>',
+                    $category['name']);
+                    $re.='<ul class="dropdown-menu">';
+                    $traverse($category['children']);
+                    $re.='</ul></li>';
+                }else{
+                    $re.= sprintf('<li class="dropdown-item"><a href="#">%s</a></li>',$category['name']);
+                }
+                
+            }
+        };
+        $traverse($arr);
+        $re.='</ul>
+        </li>';
+        return $re;
+    }
 }
