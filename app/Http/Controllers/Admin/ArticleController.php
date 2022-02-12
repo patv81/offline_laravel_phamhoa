@@ -19,7 +19,28 @@ class ArticleController extends AdminController
         $this->params["pagination"]["totalItemsPerPage"] = 5;
         view()->share('controllerName', $this->controllerName);
     }
-
+    public function index(Request $request)
+    {
+        $this->params['filter']['status'] = $request->input('filter_status', 'all');
+        $this->params['filter']['category'] = $request->input('filter_category', 'all');
+        $this->params['search']['field']  = $request->input('search_field', ''); // all id description
+        $this->params['search']['value']  = $request->input('search_value', '');
+        if($this->params['filter']['category']!='all'){
+            $temp =CategoryModel::descendantsAndSelf($this->params['filter']['category'])
+            ->map(fn($x)=>$x->id)->toArray();
+            $this->params['filter']['category']=$temp;
+        }
+        $items              = $this->model->listItems($this->params, ['task'  => 'admin-list-items']);
+        $itemsStatusCount   = $this->model->countItems($this->params, ['task' => 'admin-count-items-group-by-status']); // [ ['status', 'count']]
+        $categoryModel  = new CategoryModel();
+        $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-filter-select-box']);
+        return view($this->pathViewController .  'index', [
+            'params'        => $this->params,
+            'items'         => $items,
+            'itemsStatusCount' =>  $itemsStatusCount,
+            'itemsCategory' => $itemsCategory
+        ]);
+    }
     public function form(Request $request)
     {
         $item = null;
@@ -30,7 +51,6 @@ class ArticleController extends AdminController
 
         $categoryModel  = new CategoryModel();
         $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-selectbox']);
-
         return view($this->pathViewController .  'form', [
             'item'        => $item,
             'itemsCategory' => $itemsCategory

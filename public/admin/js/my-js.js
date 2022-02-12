@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     $btnSearch.click(function () {
         var pathname = window.location.pathname;
-        let params = ["filter_status"];
+        let params = ["filter_status","filter_category"];
         let searchParams = new URLSearchParams(window.location.search); // ?filter_status=active
 
         let link = "";
@@ -127,6 +127,11 @@ $(document).ready(function () {
                 });
             },
         });
+    });
+    $('select[name = filter_category]').on('change', function() {        
+        url = new URLSearchParams(window.location.search)
+        url.set('filter_category',this.value);
+        window.location.href =window.location.pathname+ '?'+url.toString()
     });
     var options = {
     filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',

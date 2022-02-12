@@ -30,6 +30,9 @@ class ArticleModel extends AdminModel
             if ($params['filter']['status'] !== "all") {
                 $query->where('a.status', '=', $params['filter']['status']);
             }
+            if ($params['filter']['category'] !== "all") {
+                $query->whereIn('a.category_id', $params['filter']['category']);
+            }
 
             if ($params['search']['value'] !== "") {
                 if ($params['search']['field'] == "all") {
@@ -120,6 +123,9 @@ class ArticleModel extends AdminModel
                 } else if (in_array($params['search']['field'], $this->fieldSearchAccepted)) {
                     $query->where($params['search']['field'], 'LIKE',  "%{$params['search']['value']}%");
                 }
+            }
+            if ($params['filter']['category'] !== "all") {
+                $query->whereIn('a.category_id', $params['filter']['category']);
             }
         }
         if ($options['task'] == "admin-cound-items-in-dashboard") {

@@ -41,7 +41,7 @@ class CategoryModel extends AdminModel
                 ->limit(8);
             $result = $query->get()->toArray();
         }
-        if ($options['task'] == 'news-list-items1') {
+        if ($options['task'] == 'news-list-items-nested-item') {
             $query = self::select('id', 'name')->defaultOrder()
                 ->where('status', '=', 'active')
                 ->withDepth()->having('depth', '>', 0);
@@ -62,6 +62,18 @@ class CategoryModel extends AdminModel
                 ->where('status', '=', 'active');
 
             $result = $query->pluck('name', 'id')->toArray();
+        }
+        if ($options['task'] == 'admin-list-items-in-filter-select-box') {
+            $query = self::select('id', 'name')->where('_lft','<>',NULL)->withDepth()->having('depth', '>',0)->defaultOrder();
+            if(isset($params['id'])){
+                $node = self::find($params['id']);
+                $query = self::select('id', 'name')->where('_lft','<',$node->_lft)->orWhere('_rgt','>',$node->_rgt)->withDepth()->defaultOrder();
+            }
+            $nodes  = $query->get()->toFlatTree();
+            foreach($nodes as $value){
+                $result[$value['id']] = str_repeat('|----',$value['depth']-1).$value['name'];
+            }
+            // dd($result);
         }
         if ($options['task'] == 'admin-list-items-in-select-box') {
             $query = self::select('id', 'name')->where('_lft','<>',NULL)->withDepth()->defaultOrder();

@@ -3,7 +3,7 @@ namespace App\Helpers;
 use Config;
 use App\Models\CategoryModel;
 class Template {
-    public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch) { // $currentFilterStatus active inactive all
+    public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch,$paramCategory) { // $currentFilterStatus active inactive all
         $xhtml = null;
         $tmplStatus = Config::get('zvn.template.status');
 
@@ -23,7 +23,9 @@ class Template {
                 if($paramsSearch['value'] !== ''){
                     $link .= "&search_field=" . $paramsSearch['field'] . "&search_value=" .  $paramsSearch['value'];
                 }
-
+                if($paramCategory !== ''){
+                    $link .= "&filter_category=" . $paramCategory;
+                }
                 $class  = ($currentFilterStatus == $statusValue) ? 'btn-danger' : 'btn-info';
                 $xhtml  .= sprintf('<a href="%s" type="button" class="btn %s">
                                     %s <span class="badge bg-white">%s</span>
@@ -248,4 +250,20 @@ class Template {
         </li>';
         return $re;
     }
+    public static function showItemSelectFilter($displayValue, $tmplDisplay)
+    {
+        
+        $tmplDisplay['all']= 'Tất cả';
+       $xhtml = sprintf('<select name="filter_category" data-url="%s" class="form-control">', '#'  );
+
+        foreach ($tmplDisplay as $key => $value) {
+           $xhtmlSelected = '';
+           if ($key == $displayValue) $xhtmlSelected = 'selected="selected"';
+            $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value);
+        }
+        $xhtml .= '</select>';
+
+        return $xhtml;
+    }
+
 }

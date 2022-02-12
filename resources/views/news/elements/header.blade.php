@@ -9,7 +9,7 @@ $menuModel = new MenuModel();
 $itemsMenu = $menuModel->listItems(null, ['task' => 'news-list-items']);
 
 $itemsCategory = $categoryModel->listItems(null, ['task' => 'news-list-items']);
-$itemsCategory1 = $categoryModel->listItems(null, ['task' => 'news-list-items1']);
+$itemsCategory1 = $categoryModel->listItems(null, ['task' => 'news-list-items-nested-item']);
 
 
 
