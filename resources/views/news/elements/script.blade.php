@@ -13,3 +13,4 @@
 <script src="{{asset('news/js/parallax-js-master/parallax.min.js')}}"></script>
 <script src="{{asset('news/js/custom.js')}}"></script>
 <script src="{{asset('news/js/my-js.js')}}"></script>
+<script src="{{asset('news/js/script-dropdown.js')}}"></script>

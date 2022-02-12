@@ -203,36 +203,44 @@ class Template {
     }
     
     public static function showNestedCategory($name,$arr){
-        // $test= '<li class="nav-item dropdown  dropdown-submenu">
-        //     <a class="test nav-link dropdown-toggle" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+        // $test=
+        // '<li class="nav-item dropdown">
+        //     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  Treeview menu  </a>
         //     <ul class="dropdown-menu">
-        //         <li class="dropdown-item" ><a tabindex="-1" href="#">2nd level dropdown</a></li>
-        //         <li class="dropdown-item" ><a tabindex="-1" href="#">2nd level dropdown</a></li>
-        //         <li class="dropdown-item dropright dropdown-submenu">
-        //             <a class="test nav-link dropdown-toggle" href="#">Another dropdown <span class="caret"></span></a>
-        //             <ul class="dropdown-menu">
-        //                 <li><a href="#">3rd level dropdown</a></li>
-        //                 <li><a href="#">3rd level dropdown</a></li>
-        //             </ul>
-        //         </li>
+        //     <li><a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
+        //     <li><a class="dropdown-item" href="#"> Dropdown item 2 &raquo </a>
+        //         <ul class="submenu dropdown-menu">
+        //             <li><a class="dropdown-item" href="">Submenu item 1</a></li>
+        //             <li><a class="dropdown-item" href="">Submenu item 2</a></li>
+        //             <li><a class="dropdown-item" href="">Submenu item 3 &raquo </a>
+        //                 <ul class="submenu dropdown-menu">
+        //                     <li><a class="dropdown-item" href="">Multi level 1</a></li>
+        //                     <li><a class="dropdown-item" href="">Multi level 2</a></li>
+        //                 </ul>
+        //             </li>
+        //             <li><a class="dropdown-item" href="">Submenu item 4</a></li>
+        //             <li><a class="dropdown-item" href="">Submenu item 5</a></li>
+        //         </ul>
+        //     </li>
+        //     <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
+        //     <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
         //     </ul>
         // </li>';
-        $re = sprintf('<li class="nav-item dropdown  dropdown-submenu">
-            <a class="test nav-link dropdown-toggle" tabindex="-1" href="#">%s <span class="caret"></span></a>
+        $re = sprintf('<li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">%s</a>
             <ul class="dropdown-menu">',$name);
         $traverse = function ($categories) use (&$traverse,&$re) {
             foreach ($categories as $category) {
                 if(!empty($category['children'])){ 
-                    $re.=sprintf('<li class="dropdown-item dropright dropdown-submenu">
-                        <a class="test nav-link dropdown-toggle" href="#">%s<span class="caret"></span></a>',
+                    $re.=sprintf('<li><a class="dropdown-item dropdown-toggle" href="#">%s</a>',
                     $category['name']);
-                    $re.='<ul class="dropdown-menu">';
+                    $re.=' <ul class="submenu dropdown-menu">';
                     $traverse($category['children']);
                     $re.='</ul></li>';
                 }else{
-                    $re.= sprintf('<li class="dropdown-item"><a href="#">%s</a></li>',$category['name']);
+                    $re.= sprintf('<li><a class="dropdown-item" href="#">%s</a></li>',$category['name']);
                 }
-                
+
             }
         };
         $traverse($arr);
