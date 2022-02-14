@@ -23,7 +23,7 @@ class ArticleModel extends AdminModel
         $result = null;
 
         if ($options['task'] == "admin-list-items") {
-            $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name')
+            $query = $this->select('a.id', 'a.name', 'a.status', 'a.content', 'a.thumb', 'a.type', 'c.name as category_name', 'a.category_id')
                 ->leftJoin('category as c', 'a.category_id', '=', 'c.id');
 
 
@@ -176,7 +176,7 @@ class ArticleModel extends AdminModel
 
 
         if ($options['task'] == 'add-item') {
-            $params['created_by'] = "hailan";
+            $params['created_by'] = session('userInfo')['username'];
             $params['created']    = date('Y-m-d');
             $params['thumb']      = $this->uploadThumb($params['thumb']);
             self::insert($this->prepareParams($params));
@@ -191,10 +191,17 @@ class ArticleModel extends AdminModel
                 $params['thumb']      = $this->uploadThumb($params['thumb']);
             }
 
-            $params['modified_by']   = "hailan";
+            $params['modified_by']   = session('userInfo')['username'];
             $params['modified']      = date('Y-m-d');
 
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
+        }
+        if ($options['task'] == 'change-attribute') {
+            $arr=[];
+            $arr['modified_by'] = session('userInfo')['username'];
+            $arr['modified']    = date('Y-m-d');
+            $arr[$params['field']] = $params['value'];
+            self::where('id', $params['id'])->update($this->prepareParams($arr));
         }
     }
 

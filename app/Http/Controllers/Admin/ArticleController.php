@@ -84,4 +84,13 @@ class ArticleController extends AdminController
             'status' => 'success'
         ]);
     }
+    public function changeAttribute(Request $request){
+        $params['field'] = $request->field   ;
+        $params['id'] = $request->id   ;
+        $params['value'] = $request->value   ;
+        $this->model->saveItem($params, ['task' => 'change-attribute']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

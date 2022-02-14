@@ -28,7 +28,7 @@
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
                             $content         = Hightlight::show($val['content'], $params['search'], 'content');
                             $thumb           = Template::showItemThumb($controllerName, $val['thumb'], $val['name']);
-                            $categoryName    = $val['category_name'];
+                            $categoryName    = Template::showItemSelectAjax($controllerName, $id,$itemsCategory,$val['category_id'],$fileldName='category_id');
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
                             $type            = Template::showItemSelect($controllerName, $id, $val['type'], 'type');
                             // $createdHistory  = Template::showItemHistory($val['created_by'], $val['created']);

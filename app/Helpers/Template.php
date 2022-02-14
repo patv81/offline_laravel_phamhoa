@@ -3,7 +3,7 @@ namespace App\Helpers;
 use Config;
 use App\Models\CategoryModel;
 class Template {
-    public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch,$paramCategory) { // $currentFilterStatus active inactive all
+    public static function showButtonFilter ($controllerName, $itemsStatusCount, $currentFilterStatus, $paramsSearch,$paramCategory='') { // $currentFilterStatus active inactive all
         $xhtml = null;
         $tmplStatus = Config::get('zvn.template.status');
 
@@ -264,6 +264,21 @@ class Template {
         $xhtml .= '</select>';
 
         return $xhtml;
+    }
+    public static function showItemSelectAjax($controllerName, $id, $allItems, $currentKeyItem,$fieldName)
+    {
+        
+        $link          = route($controllerName . '/attribute' , ['value' => 'value_new', 'id' => $id,'field' => $fieldName]);
+        $xhtml = sprintf('<select name="select_change_attr" data-url="%s" data-field="%s" class="form-control">', $link ,$fieldName );
+
+            foreach ($allItems as $key => $value) {
+            $xhtmlSelected = '';
+            if ($key == $currentKeyItem) $xhtmlSelected = 'selected="selected"';
+                $xhtml .= sprintf('<option value="%s" %s>%s</option>', $key, $xhtmlSelected, $value);
+            }
+            $xhtml .= '</select>';
+
+            return $xhtml;
     }
 
 }
