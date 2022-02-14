@@ -1,6 +1,10 @@
 @php
     use App\Helpers\URL;
-    $linkCategory  =  URL::linkCategory($item['category_id'], $item['category_name']);
+    use App\Models\CategoryModel;
+    $categories = CategoryModel::defaultOrder()
+        ->withDepth()->having('depth','>',0)
+        ->ancestorsAndSelf($item['category_id'])
+        ->toFlatTree()->toArray();
 @endphp
 
 <div class="home">
@@ -14,7 +18,12 @@
                         <div class="breadcrumbs">
                             <ul class="d-flex flex-row align-items-start justify-content-start">
                                 <li><a href="{!! route('home')!!}">Trang chủ</a></li>
-                                <li><a href="{!! $linkCategory !!}">{!! $item['category_name'] !!}</a></li>
+                                @foreach ($categories as $category)
+                                    @php
+                                        $linkCategory  =  URL::linkCategory($category['id'], $category['name']);
+                                    @endphp
+                                    <li><a href="{!! $linkCategory !!}">{!! $category['name'] !!}</a></li>
+                                @endforeach
                                 <li>{!! $item['name'] !!}</li>
                             </ul>
                         </div>

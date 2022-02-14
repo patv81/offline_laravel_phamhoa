@@ -42,10 +42,10 @@ class CategoryModel extends AdminModel
             $result = $query->get()->toArray();
         }
         if ($options['task'] == 'news-list-items-nested-item') {
-            $query = self::select('id', 'name')->defaultOrder()
-                ->where('status', '=', 'active')
-                ->withDepth()->having('depth', '>', 0);
-            $result = self::withDepth()->having('depth', '>', 0)->get()->toTree()->toArray();
+            $query = self::withDepth()->having('depth', '>', 0)
+                ->defaultOrder()
+                ->where('status', '=', 'active');
+            $result = $query->get()->toTree()->toArray();
         }
 
         if ($options['task'] == 'news-list-items-is-home') {
