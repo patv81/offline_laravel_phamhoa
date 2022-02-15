@@ -34,7 +34,7 @@ class Feed
         
         $data=[];
         try {
-            $data = collect($newDataWillbesaved)->map(function($item){
+            $data = collect($newDataWillBesaved)->map(function($item){
                 $item['pub_date'] = date("Y-m-d H-i-s",strtotime($item['pubDate']));
                 unset($item['pubDate']);
                 return $item;
