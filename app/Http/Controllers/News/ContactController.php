@@ -30,7 +30,8 @@ class ContactController extends Controller
     {
         view()->share('title', 'Liên hệ');
         return view($this->pathViewController .  'index', [
-            
+            'settingMain' => json_decode($this->settingMain['value'],true),
+            'settingEmail'=> json_decode($this->settingEmail['value'],true)
         ]);
     }
     public function save(Request $request){

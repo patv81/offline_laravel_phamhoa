@@ -17,7 +17,7 @@
                                         </div>
                                         <div class="text-center">
                                             <h3>Địa chỉ</h3>
-                                            <p>Tầng 6, Nguyễn Hữu cảnh</p>
+                                            <p>{{ $settingMain['address'] }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -27,8 +27,8 @@
                                             <i class="fa fa-phone fa-5x" aria-hidden="true"></i>
                                         </div>
                                         <div class="text-center">
-                                            <h3>Địa chỉ</h3>
-                                            <p>Tầng 6, Nguyễn Hữu cảnh</p>
+                                            <h3>Số điện thoại</h3>
+                                            <p>0123456789</p>
                                         </div>
                                     </div>
                                 </div>
@@ -38,8 +38,8 @@
                                             <i class="fa fa-envelope-o fa-5x" aria-hidden="true"></i>
                                         </div>
                                         <div class="text-center">
-                                            <h3>Địa chỉ</h3>
-                                            <p>Tầng 6, Nguyễn Hữu cảnh</p>
+                                            <h3>Email</h3>
+                                            <p>{{ $settingEmail['username'] }}</p>
                                         </div>
                                     </div>
                                 </div>
