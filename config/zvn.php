@@ -96,6 +96,7 @@ return [
             'user'      => ['all', 'username', 'email', 'fullname'],
             'menu'      => ['all', 'name', 'link'],
             'contact'   => ['all','message','fullname','phone','email'],
+            'attribute'      => ['all', 'name'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -106,6 +107,7 @@ return [
             'user'      => ['edit'],
             'menu'   => ['edit', 'delete'],
             'contact' => ['delete'],
+            'attribute'   => ['edit', 'delete'],
         ]
     ]
     
