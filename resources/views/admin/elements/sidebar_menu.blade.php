@@ -26,7 +26,7 @@
             </li>
             <li class=""><a><i class="fa fa-shopping-basket "></i> Product Manager <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu" style="display: none;">
-                    <li><a href="#">Product Category</a></li>
+                    <li><a href="{{ route('categoryproduct') }}">Product Category</a></li>
                     <li><a href="#">Product</a></li>
                 </ul>
             </li>
