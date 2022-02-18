@@ -71,10 +71,10 @@ class Form {
             case 'logo':
                 $xhtml.=sprintf(
                 '<div class="form-group">
-                    <label for="logo" class="control-label col-md-3 col-sm-3 col-xs-12">Logo</label>
-                    <div class="input-group">
+                    %s
+                    <div class="input-group col-md-6 col-sm-6 col-xs-12">
                         <span class="input-group-btn">
-                            <a id="lfm" data-input="logo" data-preview="holder" class="btn btn-primary">
+                            <a id="lfm" data-input="%s" data-preview="holder" class="btn btn-primary">
                             <i class="fa fa-picture-o"></i> Choose
                             </a>
                         </span>
@@ -83,7 +83,7 @@ class Form {
                     
                     <img id="holder" src="%s" style="margin-top:15px;max-height:100px;display: block;margin-left: auto;margin-right: auto;">
                     
-                </div>',$element['element'],$element['image']);
+                </div>',$element['label'],$element['nameInput']??'logo',$element['element'],$element['image']);
 
                 break;
         }
