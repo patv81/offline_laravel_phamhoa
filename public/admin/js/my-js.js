@@ -139,6 +139,37 @@ $(document).ready(function () {
     filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
     filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
     };
-    CKEDITOR.replace('my-editor', options);
     $('#lfm').filemanager('image');
+    $('.dd').nestable().on('change',function(){
+        $('#tar').val($(this).nestable('serialize'));
+    });
+    // var inputElm = document.querySelector('.form-tagify'),
+    var inputElm = document.querySelectorAll('.form-tagify');
+    inputElm.forEach(function(x){
+        tagify = new Tagify (x,{
+        delimiters       : null,
+        callbacks        : {
+            add    : console.log,  // callback when adding a tag
+            remove : console.log   // callback when removing a tag
+        }
+    });
+        x.addEventListener('change', onChange)        
+    })
+    // tagify = new Tagify (inputElm);
+
+    // inputElm.addEventListener('change', onChange)
+
+    function onChange(e){
+    // outputs a String
+    console.log(e.target.value)
+    }
+    //CANH BAO, cau lenh phai dat truoc
+    try {
+        CKEDITOR.replace('my-editor', options);
+    }
+    catch (exception_var) {
+        console.log('khong co CKEDITOR');
+    }
+
 });
+

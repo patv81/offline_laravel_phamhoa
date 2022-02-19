@@ -41,7 +41,9 @@ class AttributeModel extends AdminModel
                             ->paginate($params['pagination']['totalItemsPerPage']);
 
         }
-
+        if($options['task'] == 'admin-list-items-in-product-form'){
+            $result = self::all();
+        }
         return $result;
     }
 

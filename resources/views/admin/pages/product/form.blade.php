@@ -68,4 +68,5 @@
             </div>
         </div>
     </div>
+    @include('admin.pages.product.form_attribute')
 @endsection

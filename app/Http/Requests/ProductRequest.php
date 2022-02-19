@@ -25,6 +25,9 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->saveAttribute){
+            return [];
+        }
         $id = $this->id;
         $condName = "bail|required|between:5,100|unique:$this->table,name";
         $condThumb= 'bail|required|between:5,100';

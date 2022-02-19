@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ProductModel as MainModel;
 use App\Models\CategoryProductModel;
+use App\Models\AttributeModel;
+use App\Models\ProductAttributeValueModel;
 use App\Http\Requests\ProductRequest as MainRequest;
 
 class ProductController extends AdminController
@@ -47,21 +49,28 @@ class ProductController extends AdminController
         if ($request->id !== null) {
             $params["id"] = $request->id;
             $item = $this->model->getItem($params, ['task' => 'get-item']);
+            $productAttributeValue = new ProductAttributeValueModel();
+            $itemsAttribute = $productAttributeValue->listItems($params,['task'=>'admin-list-items-in-product']);
+            $itemsAttributeValue =$itemsAttribute->groupBy('attribute_id');
         }
 
         $categoryModel  = new CategoryProductModel();
         $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-filter-select-box']);
+        
+        $attributeModel = new AttributeModel();
+        $itemsAttribute = $attributeModel->listItems(null, ['task' => 'admin-list-items-in-product-form']);    
         return view($this->pathViewController .  'form', [
             'item'        => $item,
-            'itemsCategory' => $itemsCategory
+            'itemsCategory' => $itemsCategory,
+            'itemsAttribute'=>$itemsAttribute,
+            'itemsAttributeValue'=>$itemsAttributeValue??null
         ]);
     }
 
     public function save(MainRequest $request)
     {
-        if ($request->method() == 'POST') {
+        if ($request->method() == 'POST' && is_null($request->saveAttribute)) {
             $params = $request->all();
-
             $task   = "add-item";
             $notify = "Thêm phần tử thành công!";
 
@@ -71,6 +80,34 @@ class ProductController extends AdminController
             }
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
+        }
+        if ($request->method() == 'POST' && $request->saveAttribute) {
+            $productAttributeValue = new ProductAttributeValueModel();
+            $params = $request->all();
+            $collection = collect($params['arr']);
+            $result = [];
+            $collection->each(function ($item, $key) use($collection,$params,&$result) {
+                $arr=[];
+                collect(json_decode($collection[$key], true))->map(function($x) use($params,&$arr,$key){
+                    $newItem = [
+                        'value'=>$x['value'],
+                        'product_id'=>$params['id'],
+                        'attribute_id'=>$key,
+                    ];
+                    array_push($arr,$newItem);
+                });
+                array_push($result,$arr);
+
+
+                // $test= collect(json_decode($collection[$key], true))
+                // ->pluck('value')
+                // ->each($item,$key){
+
+                // }
+            });
+            $result=collect($result)->collapse();
+            $productAttributeValue->insert($result->toArray());
+            return 'hello';
         }
     }
 

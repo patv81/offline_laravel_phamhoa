@@ -11,7 +11,11 @@
 <!-- iCheck -->
 <script src="{{ asset('admin/asset/iCheck/icheck.min.js') }}"></script>
 <script src="{{asset('admin/js/ckeditor/ckeditor.js')}}"></script>
+//cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.css
+<script src="https://cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.js"></script>
 <!-- Custom Theme Scripts -->
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 
 <script src="{{ asset('admin/js/notify.min.js') }}"></script>
 <script src="{{ asset('admin/js/custom.min.js') }}"></script>
