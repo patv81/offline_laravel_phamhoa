@@ -68,5 +68,7 @@
             </div>
         </div>
     </div>
-    @include('admin.pages.product.form_attribute')
+    @if (request()->id!=null)
+        @include('admin.pages.product.form_attribute')
+    @endif
 @endsection

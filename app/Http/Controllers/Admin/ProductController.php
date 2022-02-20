@@ -50,20 +50,21 @@ class ProductController extends AdminController
             $params["id"] = $request->id;
             $item = $this->model->getItem($params, ['task' => 'get-item']);
             $productAttributeValue = new ProductAttributeValueModel();
-            $itemsAttribute = $productAttributeValue->listItems($params,['task'=>'admin-list-items-in-product']);
-            $itemsAttributeValue =$itemsAttribute->groupBy('attribute_id');
+            $itemsAttributeValue = $productAttributeValue->listItems($params,['task'=>'admin-list-items-in-product']);
+            $itemsAttributeValue = $itemsAttributeValue->groupBy('attribute_id');
         }
-
+        
         $categoryModel  = new CategoryProductModel();
         $itemsCategory  = $categoryModel->listItems(null, ['task' => 'admin-list-items-in-filter-select-box']);
         
         $attributeModel = new AttributeModel();
         $itemsAttribute = $attributeModel->listItems(null, ['task' => 'admin-list-items-in-product-form']);    
+
         return view($this->pathViewController .  'form', [
             'item'        => $item,
             'itemsCategory' => $itemsCategory,
             'itemsAttribute'=>$itemsAttribute,
-            'itemsAttributeValue'=>$itemsAttributeValue??null
+            'itemsAttributeValue'=>$itemsAttributeValue??collect([])
         ]);
     }
 
@@ -81,36 +82,54 @@ class ProductController extends AdminController
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);
         }
-        if ($request->method() == 'POST' && $request->saveAttribute) {
+        if ($request->method() == 'POST' 
+        && $request->saveAttribute 
+        && $request->id!=null 
+        && !MainModel::select('a.id')->where('a.id',$request->id)->get()->isEmpty() ){
             $productAttributeValue = new ProductAttributeValueModel();
+            //delete all attribute value
+            $params["id"] = $request->id;
+            $item = $this->model->getItem($params, ['task' => 'get-item']);
+            $productAttributeValue = new ProductAttributeValueModel();
+            $itemsAttributeValue = $productAttributeValue->listItems($params,['task'=>'admin-list-items-in-product']);
+            $itemsAttributeValue->each(fn($item)=>$item->delete());
+            // insert 
             $params = $request->all();
-            $collection = collect($params['arr']);
+            $collection =$params['arr'];
             $result = [];
-            $collection->each(function ($item, $key) use($collection,$params,&$result) {
-                $arr=[];
-                collect(json_decode($collection[$key], true))->map(function($x) use($params,&$arr,$key){
-                    $newItem = [
-                        'value'=>$x['value'],
-                        'product_id'=>$params['id'],
+            foreach ($collection as $key => $value) {
+                $data = json_decode($value,true);
+                foreach ($data ?? [] as $keydata => $valuedata) {
+                    $result[] = [
+                        'value'=>$valuedata['value'],
+                        'product_id'=> $params['id'],
                         'attribute_id'=>$key,
                     ];
-                    array_push($arr,$newItem);
-                });
-                array_push($result,$arr);
-
-
-                // $test= collect(json_decode($collection[$key], true))
-                // ->pluck('value')
-                // ->each($item,$key){
-
-                // }
-            });
-            $result=collect($result)->collapse();
-            $productAttributeValue->insert($result->toArray());
-            return 'hello';
+                }
+            }
+            $productAttributeValue->insert($result);
+            $notify = "Thêm phần tử thành công!";
+            return redirect()->back()->with("zvn_notify", $notify);
         }
     }
-
+    // "[{"value":"XL"},{"value":"X"},{"value":"L"}]"
+    // [
+    //     [
+    //         'product_id'=>1,
+    //         'attribute_id'=>1
+    //         'value'=>'X'
+    //     ],
+    //     [
+    //         'product_id'=>1,
+    //         'attribute_id'=>1
+    //         'value'=>'XL'
+    //     ],
+    //     [
+    //         'product_id'=>1,
+    //         'attribute_id'=>1
+    //         'value'=>'L'
+    //     ]
+    // ]
 
     public function type(Request $request)
     {

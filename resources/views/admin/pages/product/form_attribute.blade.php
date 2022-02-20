@@ -9,25 +9,24 @@
     $inputHiddenID    = Form::hidden('id', @$item['id']);
     $submitBtn = Form::input('submit','saveAttribute', 'Save Attribute',['class'=>'btn btn-success']);
     $arr=[];
-    $itemsAttribute->map(function ($item) use (&$arr,$formLabelAttr,$formInputAttr,$itemsAttributeValue) {
-        $value='';
-        if(!$itemsAttributeValue->isEmpty()) {
-            $value= collect($itemsAttributeValue[$item['id']])->map(function($item){
-                return ['value'=>$item['value']];
-            });
-            $value=json_encode($value);
+    foreach ($itemsAttribute as $item){
+        $defaultValue = []; 
+        if (isset($item['id'])){
+            foreach ($itemsAttributeValue[$item['id']] ?? [] as $itemValue){
+                $defaultValue[] = $itemValue['value'];
+            }
         }
-        $newArr =[
+        $defaultValue = json_encode($defaultValue);
+        $arr[] =[
             'label'   => Form::label(@$item['id'], @$item['name'], $formLabelAttr),
-            'element' => Form::textarea('arr['.@$item['id'].']', $value,  $formInputAttr )
+            'element' => Form::textarea('arr['.@$item['id'].']', $defaultValue,  $formInputAttr )
         ];
-        array_push($arr, $newArr);
-    });
-    $newArr = [
+    }
+    $arr[] = [
         'element' => $inputHiddenID  . $submitBtn,
         'type'    => "btn-submit-edit"
     ];
-    array_push($arr,$newArr);
+
 @endphp
 
 
