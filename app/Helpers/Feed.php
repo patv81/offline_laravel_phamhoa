@@ -26,11 +26,10 @@ class Feed
     public static function readToSave($itemsRss)
     {
         // self::deleteAll();
-        $oldData= NewsRssModel::all();
-        
-
-        $newData = collect(self::read($itemsRss));
-        $newDataWillBesaved = self::diff($newData,$oldData);
+        $oldData= NewsRssModel::latest('id')->first()->link;
+        $newData = self::read($itemsRss);
+        $key = array_search($oldData, array_column($newData, 'link'));
+        $newDataWillBesaved = array_slice($newData,$key+1,-1);
         
         $data=[];
         try {
