@@ -36,13 +36,6 @@ $elements = [
         ],*/
     [
         'label' => Form::label('thumb', 'Thumb', $formLabelAttr),
-        'element' => Form::text('thumb', @$item['thumb'], $formInputAttr),
-        'image' => @$item['thumb'],
-        'type' => 'logo',
-        'nameInput' => 'thumb',
-    ],
-    [
-        'label' => Form::label('thumb1', 'Thumb1', $formLabelAttr),
         'type' => 'dropzone',
     ],
     [
@@ -83,10 +76,11 @@ $elements = [
                             <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
                             <div class="dz-success-mark"><span>✔</span></div>
                             <div class="dz-error-mark"><span>✘</span></div>
-                            <div style="margin-top:5px;max-width:100%;display: block;width:120px">
-                                <input style="width:120px;" type="text" placeholder="alt ảnh" name="thumb[alt][]" class="form-control dz-custom-input">
+                            <div class="input-thumb" style="margin-top:5px;max-width:100%;display: block;width:120px">
+                                <input style="width:120px;" type="text" placeholder="alt ảnh" name="thumb[alt][]"
+                                    class="form-control dz-custom-input">
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -100,6 +94,7 @@ $elements = [
 
 @section('after_script')
     <script>
+
         $(document).ready(function() {
             Dropzone.autoDiscover = false;
             // The constructor of Dropzone accepts two arguments:
@@ -107,7 +102,8 @@ $elements = [
             // 1. The selector for the HTML element that you want to add
             //    Dropzone to, the second
             // 2. An (optional) object with the configuration
-            $("#dropzone" ).sortable({});
+            let uploadDocumentMap={};
+            $("#dropzone").sortable({});
             let myDropzone = new Dropzone("div#dropzone", {
                 url: "{{ route('product/media') }}",
                 dictDefaultMessage: "Kéo thả hình ảnh để tải lên",
@@ -118,6 +114,30 @@ $elements = [
                 addRemoveLinks: true,
                 acceptFile: ".jpg,jpeg,.png,.gif",
                 previewTemplate: document.querySelector('.tpl2').innerHTML,
+                error: function(file, response) {
+                    console.log("Erro");
+                    console.log(response);
+                },
+                success: function(file, response) {
+                    console.log("Sucesso");
+                    console.log(response);
+                    $(file.previewElement)
+                        .find('.input-thumb')
+                        .append(`<input type="hidden" name="thumb[name][]" value="${response.name}" />`);
+                    uploadDocumentMap[file.name]=response.name;
+                },
+                removedfile: function(file){
+                    file.previewElement.remove();
+                    var name ='';
+                    if(typeof(file.name) !== 'undefined'){
+                        name= file.name;
+                    }else{
+                        name=uploadDocumentMap[file.name]
+                    }
+                },
+                complete: function(file) {
+                    console.log("Complete");
+                }
             });
         })
     </script>

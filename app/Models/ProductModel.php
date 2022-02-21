@@ -6,7 +6,7 @@ use App\Models\AdminModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-
+use File;
 class ProductModel extends AdminModel
 {
     public function __construct()
@@ -179,16 +179,30 @@ class ProductModel extends AdminModel
             $params['created_by'] = session('userInfo')['username'];
             $params['created']    = date('Y-m-d');
             $params['thumb']      = $params['thumb'];
+            $thumb=[];
+            foreach($params['thumb']['name'] as $key => $value) {
+                $thumb[] = [
+                    'name' => $params['thumb']['name'][$key],
+                    'alt'  => $params['thumb']['alt'][$key],
+                    'size' => File::size(public_path("images/product/".$params['thumb']['name'][$key])),
+                ];
+            }
+            $params['thumb']=json_encode($thumb);
             // dd($this->prepareParams($params));
             self::insert($this->prepareParams($params));
         }
 
         if ($options['task'] == 'edit-item') {
             if (!empty($params['thumb'])) {
-                // Xóa hình cũ
-
-                // Up hình mới
-                $params['thumb']      =$params['thumb'];
+                $thumb=[];
+                foreach($params['thumb']['name'] as $key => $value) {
+                    $thumb[] = [
+                        'name' => $params['thumb']['name'][$key],
+                        'alt'  => $params['thumb']['alt'][$key],
+                        'size' => File::size(public_path("images/product/".$params['thumb']['name'][$key])),
+                    ];
+                }
+                $params['thumb'] = json_encode($thumb);
             }
 
             $params['modified_by']   = session('userInfo')['username'];

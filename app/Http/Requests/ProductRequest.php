@@ -30,18 +30,15 @@ class ProductRequest extends FormRequest
         }
         $id = $this->id;
         $condName = "bail|required|between:5,100|unique:$this->table,name";
-        $condThumb= 'bail|required|between:5,100';
 
         if(!empty($id)){
             $condName .= ",$id";
-            $condThumb = 'bail|required|between:5,100';
         }
 
         return [
             'name'        => $condName,
             'content' => 'bail|required|min:5',
             'status'      => 'bail|in:active,inactive',
-            'thumb'       => $condThumb
         ];
     }
 
