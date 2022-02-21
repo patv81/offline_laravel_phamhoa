@@ -84,7 +84,15 @@ class Form {
                     <img id="holder" src="%s" style="margin-top:15px;max-height:100px;display: block;margin-left: auto;margin-right: auto;">
                     
                 </div>',$element['label'],$element['nameInput']??'logo',$element['element'],$element['image']);
-
+                break;
+            case 'dropzone':
+                $xhtml.=sprintf(
+                '<div class="form-group">
+                    %s
+                    <div class="input-group col-md-6 col-sm-6 col-xs-12">
+                        <div class="dropzone" id="dropzone"></div>
+                    </div>
+                </div>',$element['label']);
                 break;
         }
 

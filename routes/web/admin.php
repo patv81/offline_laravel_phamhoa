@@ -180,6 +180,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin', 'middleware' => 
         Route::get('change-status-{status}/{id}',       [ 'as' => $controllerName . '/status',      'uses' => $controller . 'status']);
         Route::get('change-type-{type}/{id}',           [ 'as' => $controllerName . '/type',        'uses' => $controller . 'type']);
         Route::get('change-attribute-{value}/{field}/{id}',     [ 'as' => $controllerName . '/attribute',        'uses' => $controller . 'changeAttribute']);
+        Route::post('meida',                            [ 'as' => $controllerName . '/media',        'uses' => $controller . 'media']);
     });
 
 });
