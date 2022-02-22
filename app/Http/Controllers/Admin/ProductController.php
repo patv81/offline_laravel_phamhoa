@@ -78,6 +78,12 @@ class ProductController extends AdminController
             if ($params['id'] !== null) {
                 $task   = "edit-item";
                 $notify = "Cập nhật phần tử thành công!";
+                $removeThumb = $params['removeThumb']??[];
+                if(!empty($removeThumb)){
+                    foreach($removeThumb as $key => $value) {
+                        $this->model->deleteThumb($value);
+                    }
+                }
             }
             $this->model->saveItem($params, ['task' => $task]);
             return redirect()->route($this->controllerName)->with("zvn_notify", $notify);

@@ -14,7 +14,7 @@ class ProductModel extends AdminModel
         $this->table               = 'product as a';
         $this->folderUpload        = 'product';
         $this->fieldSearchAccepted = ['name', 'content'];
-        $this->crudNotAccepted     = ['_token', 'thumb_current'];
+        $this->crudNotAccepted     = ['_token', 'thumb_current','removeThumb'];
     }
 
     public function listItems($params = null, $options = null)
@@ -144,7 +144,7 @@ class ProductModel extends AdminModel
         $result = null;
 
         if ($options['task'] == 'get-item') {
-            $result = self::select('id', 'name', 'content', 'status', 'thumb', 'category_product_id')->where('id', $params['id'])->first();
+            $result = self::select('id', 'name', 'content','price' ,'status', 'thumb', 'category_product_id')->where('id', $params['id'])->first();
         }
 
         if ($options['task'] == 'get-thumb') {
@@ -181,10 +181,16 @@ class ProductModel extends AdminModel
             $params['thumb']      = $params['thumb'];
             $thumb=[];
             foreach($params['thumb']['name'] as $key => $value) {
+                $filesize = -1;
+                try {
+                    $filesize = File::size(public_path("images/product/".$params['thumb']['name'][$key])) ;
+                } catch (\Exception $e){
+
+                }
                 $thumb[] = [
                     'name' => $params['thumb']['name'][$key],
                     'alt'  => $params['thumb']['alt'][$key],
-                    'size' => File::size(public_path("images/product/".$params['thumb']['name'][$key])),
+                    'size' => $filesize,
                 ];
             }
             $params['thumb']=json_encode($thumb);
@@ -193,21 +199,26 @@ class ProductModel extends AdminModel
         }
 
         if ($options['task'] == 'edit-item') {
-            if (!empty($params['thumb'])) {
-                $thumb=[];
-                foreach($params['thumb']['name'] as $key => $value) {
-                    $thumb[] = [
-                        'name' => $params['thumb']['name'][$key],
-                        'alt'  => $params['thumb']['alt'][$key],
-                        'size' => File::size(public_path("images/product/".$params['thumb']['name'][$key])),
-                    ];
+            
+            $thumb=[];
+            foreach($params['thumb']['name'] ?? [] as $key => $value) {
+                $filesize = -1;
+                try {
+                    $filesize = File::size(public_path("images/product/".$params['thumb']['name'][$key])) ;
+                } catch (\Exception $e){
                 }
-                $params['thumb'] = json_encode($thumb);
+                $thumb[] = [
+                    'name' => $params['thumb']['name'][$key],
+                    'alt'  => $params['thumb']['alt'][$key],
+                    'size' => $filesize,
+                ];
             }
+            $params['thumb'] = json_encode($thumb);
+
 
             $params['modified_by']   = session('userInfo')['username'];
             $params['modified']      = date('Y-m-d');
-
+            // dd($this->prepareParams($params));
             self::where(['id' => $params['id']])->update($this->prepareParams($params));
         }
         if ($options['task'] == 'change-attribute') {

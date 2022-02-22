@@ -9,7 +9,6 @@ $formCkeditor = config('zvn.template.form_ckeditor');
 $statusValue = ['default' => 'Select status', 'active' => config('zvn.template.status.active.name'), 'inactive' => config('zvn.template.status.inactive.name')];
 
 $inputHiddenID = Form::hidden('id', @$item['id']);
-$inputHiddenThumb = Form::hidden('thumb_current', @$item['thumb']);
 
 $elements = [
     [
@@ -35,11 +34,15 @@ $elements = [
             'type'    => "thumb"
         ],*/
     [
+        'label' => Form::label('price', 'Price', $formLabelAttr),
+        'element' => Form::number('price', @$item['price'], $formInputAttr),
+    ],
+    [
         'label' => Form::label('thumb', 'Thumb', $formLabelAttr),
         'type' => 'dropzone',
     ],
     [
-        'element' => $inputHiddenID . $inputHiddenThumb . Form::submit('Save', ['class' => 'btn btn-success']),
+        'element' => $inputHiddenID  . Form::submit('Save', ['class' => 'btn btn-success']),
         'type' => 'btn-submit',
     ],
 ];
@@ -94,7 +97,7 @@ $elements = [
 
 @section('after_script')
     <script>
-
+        let removeThumb=[];
         $(document).ready(function() {
             Dropzone.autoDiscover = false;
             // The constructor of Dropzone accepts two arguments:
@@ -103,6 +106,7 @@ $elements = [
             //    Dropzone to, the second
             // 2. An (optional) object with the configuration
             let uploadDocumentMap={};
+            
             $("#dropzone").sortable({});
             let myDropzone = new Dropzone("div#dropzone", {
                 url: "{{ route('product/media') }}",
@@ -134,10 +138,27 @@ $elements = [
                     }else{
                         name=uploadDocumentMap[file.name]
                     }
+                    $('#main-form').append(`<input type="hidden" name="removeThumb[]" value="${uploadDocumentMap[file.name]}" />`);
                 },
                 complete: function(file) {
                     console.log("Complete");
+                },
+                @if (isset($item['id']) && $item['thumb'])
+                init: function(){
+                    var files = JSON.parse({!! json_encode($item['thumb']) !!});
+                    for (var i  in files){
+                        var file = files[i];
+                        var src = "{{ asset('images/product') }}"+"/"+file.name;
+                        this.displayExistingFile(file,src);
+                        file.previewElement.classList.add("dz-complete");
+                        $(file.previewElement)
+                            .find('.input-thumb')
+                            .append(`<input type="hidden" name="thumb[name][]" value="${file.name}" />`);
+
+                        $(file.previewElement).find('.input-thumb [name="thumb[alt][]"]').val(file.alt);
+                    }
                 }
+                @endif
             });
         })
     </script>

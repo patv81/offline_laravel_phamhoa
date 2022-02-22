@@ -26,7 +26,8 @@
                             $id              = $val['id'];
                             $name            = Hightlight::show($val['name'], $params['search'], 'name');
                             $content         = Hightlight::show($val['content'], $params['search'], 'content');
-                            $thumb           = Template::showItemThumbLFM($controllerName, $val['thumb'], $val['name']);
+                            $thumbName       = json_decode($val['thumb'], true)[0]['name']??'';
+                            $thumb           = Template::showItemThumb($controllerName, $thumbName, $val['name']);
                             $categoryName    = Template::showItemSelectAjax($controllerName, $id,$itemsCategory,$val['category_product_id'],$fileldName='category_product_id');
                             $status          = Template::showItemStatus($controllerName, $id, $val['status']); 
                             $listBtnAction   = Template::showButtonAction($controllerName, $id);
