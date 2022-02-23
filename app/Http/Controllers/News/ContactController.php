@@ -36,8 +36,6 @@ class ContactController extends Controller
     }
     public function save(Request $request){
         $data = $request->all();
-
-
         if ($request->method() == 'POST') {
             $params = $request->all();
             $task   = "add-item";
@@ -45,8 +43,16 @@ class ContactController extends Controller
 
             $params['ip'] = $request->ip();
             $this->model->saveItem($params, ['task' => $task]);
-            $admin = json_decode($this->settingEmail['value'],true)['bcc'];
-            Mail::to($data['email'])->bcc($admin)->send(new ContactMe($params));
+            $admins = json_decode($this->settingEmail['value'],true)['bcc'];
+            $adminEmails= json_decode($admins,true);
+            if (filter_var($data['email'], FILTER_VALIDATE_EMAIL )){
+                Mail::to($data['email'])->send(new ContactMe($params));
+            }
+            foreach($adminEmails as $key => $admin){
+                if (filter_var( $admin['value'], FILTER_VALIDATE_EMAIL )){
+                    Mail::bcc($admin)->send(new ContactMe($params));
+                }
+            }
             return redirect()->route($this->controllerName.'/index')->with("news_notify", $notify);
         }
     }
