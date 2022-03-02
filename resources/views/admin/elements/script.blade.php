@@ -10,8 +10,12 @@
 <script src="{{ asset('admin/asset/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('admin/asset/iCheck/icheck.min.js') }}"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="{{  asset('admin/vendors/moment/min/moment.min.js') }}"></script>
+<script src="{{  asset('admin/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<!-- ckeditor -->
 <script src="{{asset('admin/js/ckeditor/ckeditor.js')}}"></script>
-//cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.css
+<!-- nestablejs -->
 <script src="https://cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="https://unpkg.com/@yaireo/tagify"></script>

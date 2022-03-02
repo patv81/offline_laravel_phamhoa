@@ -28,6 +28,7 @@
                 <ul class="nav child_menu" style="display: none;">
                     <li><a href="{{ route('categoryproduct') }}">Product Category</a></li>
                     <li><a href="{{ route('product') }}">Product</a></li>
+                    <li><a href="{{ route('attribute') }}">Attribute</a></li>
                 </ul>
             </li>
             <li><a href="{{ route('slider') }}"><i class="fa fa-sliders"></i> Silders</a></li>
@@ -36,8 +37,9 @@
             <li><a href="{{ route('menu') }}"><i class="fa fa-sliders"></i> Menu</a></li>
             <li><a href="{{ route('contact') }}"><i class="fa fa-building-o"></i> Contact</a></li>
             <li><a href="{{ route('general') }}"><i class="fa fa-wrench"></i> Genral</a></li>
-            <li><a href="{{ route('attribute') }}"><i class="fa fa-laptop"></i> Attribute</a></li>
             <li><a href="{{ route('logs') }}"><i class="fa fa-laptop"></i> Logs</a></li>
+            <li><a href="{{ route('coupon') }}"><i class="fa fa-bullhorn" aria-hidden="true"></i> Coupon</a></li>
+            
         </ul>
     </div>
 </div>

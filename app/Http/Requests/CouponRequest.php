@@ -44,8 +44,28 @@ class CouponRequest extends FormRequest
 
         // ];
         return [
-            'value_price'=>'empty_with:value_percent',
-        ]
+            'value_price' => [
+                'bail',
+                'numeric',
+                'gt:0',
+                function ($attribute, $value, $fail) {
+                    $temp =  (request()->filled('value_price') XOR request()->filled('value_percent'));
+                    if (!$temp) {
+                        // dd(request()->filled('value_price'),request()->filled('value_percent'), $temp, request()->get('value_price'));
+                        return $fail('value_price, value_percent .Only 1 of the two is allowed');
+                    }
+                }
+            ],
+            'value_percent' => [
+                'bail',
+                'nullable',
+                'digits_between:1,2',
+            ],
+            'code'=>[
+                'required',
+                'unique:$this->table,code,'
+            ]
+        ];
     }
 
     public function messages()

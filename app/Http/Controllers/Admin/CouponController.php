@@ -25,7 +25,7 @@ class CouponController extends AdminController
             $params = $request->all();
             $params['timeStart'] = date("Y-m-d H-i-s", strtotime($params['timeStart']));
             $params['timeEnd'] = date("Y-m-d H-i-s", strtotime($params['timeEnd']));
-            dd($params);
+            
 
             $task   = "add-item";
             $notify = "Thêm phần tử thành công!";

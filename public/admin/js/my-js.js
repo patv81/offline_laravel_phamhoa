@@ -128,6 +128,12 @@ $(document).ready(function () {
             },
         });
     });
+
+    $('#generate-coupon').on("click", function (e) {
+        e.preventDefault();
+        let random = Math.random().toString(36).substring(2, 8).toUpperCase();
+        $('#generate-coupon').parent().parent().find('input').val(random);
+    });
     $('select[name = filter_category]').on('change', function() {        
         url = new URLSearchParams(window.location.search)
         url.set('filter_category',this.value);

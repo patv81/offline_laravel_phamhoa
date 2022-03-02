@@ -104,6 +104,7 @@ return [
             'contact'   => ['all','message','fullname','phone','email'],
             'attribute'      => ['all', 'name'],
             'product'      => ['all', 'name'],
+            'coupon'      => ['all', 'name'],
         ],
         'button' => [
             'default'   => ['edit', 'delete'],
@@ -117,6 +118,7 @@ return [
             'menu'   => ['edit', 'delete'],
             'contact' => ['delete'],
             'attribute'   => ['edit', 'delete'],
+            'coupon'   => ['edit', 'delete'],
         ]
     ]
     

@@ -11,6 +11,8 @@
 <link href="{{ asset('admin/css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 <!-- NProgress -->
 <link href="{{ asset('admin/asset/nprogress/nprogress.css') }}" rel="stylesheet">
+<!-- bootstrap-daterangepicker -->
+<link href="{{  asset('admin/vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
 <!-- iCheck -->
 <link href="{{ asset('admin/asset/iCheck/skins/flat/green.css') }}" rel="stylesheet">
 <!-- bootstrap-progressbar -->

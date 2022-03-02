@@ -2,6 +2,7 @@
     use App\Helpers\Form as FormTemplate;
     use App\Helpers\Template;
     $item = $itemEmail;
+    $formInputAttrTagify = config('zvn.template.form_input_tagify');
     $formInputAttr = config('zvn.template.form_input');
     $formLabelAttr = config('zvn.template.form_label');
     $formCkeditor  = config('zvn.template.form_ckeditor');
@@ -18,7 +19,7 @@
         ],
         [
             'label'   => Form::label('bcc', 'BCC', $formLabelAttr),
-            'element' => Form::textarea('bcc', @$item['bcc'], $formInputAttr )
+            'element' => Form::textarea('bcc', @$item['bcc'], $formInputAttrTagify )
         ],
 
         [
